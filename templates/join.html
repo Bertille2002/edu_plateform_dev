@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rejoindre la plateforme - Guardia EDU</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+
+    :root {
+      --bg: #080c14;
+      --surface: #0d1420;
+      --border: #1e2d45;
+      --accent: #00c4ff;
+      --text: #e2eaf5;
+      --text-dim: #6b8299;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      padding: 20px;
+    }
+
+    .register-card {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 40px;
+      width: 100%;
+      max-width: 450px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 5px;
+    }
+
+    .logo-subtitle {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-bottom: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+
+    .form-input, .form-select {
+      width: 100%;
+      background-color: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px 15px;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    .form-input:focus, .form-select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(0, 196, 255, 0.2);
+    }
+
+    .btn-submit {
+      width: 100%;
+      background-color: var(--accent);
+      color: var(--bg);
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-submit:hover {
+      opacity: 0.9;
+      box-shadow: 0 0 15px rgba(0, 196, 255, 0.4);
+    }
+
+    .error-message {
+      color: #ff6b6b;
+      font-size: 12px;
+      margin-bottom: 20px;
+      padding: 10px;
+      background-color: rgba(255, 107, 107, 0.1);
+      border-radius: 6px;
+      border-left: 3px solid #ff6b6b;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .login-link a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="register-card">
+    <div class="logo-container">
+      <div class="logo-title">Guardia EDU</div>
+      <div class="logo-subtitle">Demande de création de compte</div>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=True) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="error-message" style="background-color: {% if category == 'success' %}rgba(0,196,255,0.1); color:#00c4ff{% else %}rgba(255,107,107,0.1); color:#ff6b6b{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('join') }}">
+      <div class="form-group">
+        <label class="form-label">Type de compte</label>
+        <select name="role" class="form-select" required>
+          <option value="">Choisissez votre rôle...</option>
+          <option value="student">Étudiant</option>
+          <option value="professor">Professeur</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Votre email institutionnel</label>
+        <input type="email" name="email" class="form-input" 
+               placeholder="jean.dupont@edu.guardia.cs" required>
+      </div>
+
+      <button type="submit" class="btn-submit">Envoyer la demande à l’administrateur</button>
+    </form>
+
+    <div class="login-link">
+      Déjà un compte ? <a href="{{ url_for('auth.login') }}">Se connecter</a>
+    </div>
+  </div>
+
+</body>
+</html>
